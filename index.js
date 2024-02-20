@@ -25,7 +25,14 @@ const store = new MongoDBSession({
     collection: `my_sessions`
 });
 
-// Middleware
+// View engine setup
+app.set("view engine", "ejs");
+
+// Application level middlewares
+// - body parse
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+// - session 
 app.use(session({
     secret: `Hello World`,
     resave: false,
@@ -35,8 +42,7 @@ app.use(session({
 
 // Handlers
 app.get(`/`, (req, res) => {
-    req.session.isAuth = true;
-    res.send(`Hello World`);
+    res.render(`landing`);
 })
 
 // Server setup 
