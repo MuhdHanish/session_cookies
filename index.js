@@ -42,7 +42,7 @@ app.use(session({
 
 // Handlers
 app.get(`/`, (req, res) => {
-    res.render(`landing`);
+    res.render(`landing`, { serverVariable: 'Hello from the server' });
 })
 
 // Server setup 
