@@ -1,7 +1,33 @@
 {
+    "name": "session_cookies",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
     "scripts": {
         "dev": "nodemon index.js"
     },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/MuhdHanish/session_cookies.git"
+    },
+    "keywords": [
+        "server",
+        "node",
+        "express",
+        "session",
+        "cookies",
+        "authentication",
+        "authoriazation",
+        "ejs",
+        "validator",
+        "mongodb"
+    ],
+    "author": "MuhdHanish",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/MuhdHanish/session_cookies/issues"
+    },
+    "homepage": "https://github.com/MuhdHanish/session_cookies#readme",
     "dependencies": {
         "bcryptjs": "^2.4.3",
         "connect-mongodb-session": "^5.0.0",
