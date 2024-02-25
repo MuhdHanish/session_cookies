@@ -39,6 +39,13 @@
             color: green;
         }
 
+        button {
+            background-color: crimson;
+            color: white;
+            border: none;
+            border-radius: 3px;
+        }
+
         footer {
             background-color: #333;
             color: #fff;
@@ -53,17 +60,19 @@
     <header>
         <!-- Add your header content here -->
         <h1>Welcome to Our Dashboard Page</h1>
-        <form name="logout" action="/logout" method="post">
-            <button type="submit">Logout</button>
-        </form>
     </header>
 
     <main>
         <!-- Add your main content here -->
         <p>This is a simple landing page created using EJS.</p>
-        <p>Something from the server: <span>
+        <p>Something from the server: 
+            <span>
                 <%= serverVariable %>
-            </span></p>
+            </span>
+        </p>
+        <form name="logout" action="/logout" method="post">
+            <button type="submit">Logout</button>
+        </form>
     </main>
 
     <footer>
