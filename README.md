@@ -27,7 +27,7 @@ This is a simple project demonstrating session and cookie management, as well as
 - **Signup**: Visit the signup page http://localhost:3000/signup to create a new account.
 - **Login**: Visit the login page http://localhost:3000/login to log in to your account.
 - **Logout**: Click on the "Logout" button to log out of your account.
-- **Protected Routes**: Access to the home page http://localhost:3000/ is restricted to authenticated users only.
+- **Protected Routes**: Access to the dashboard page http://localhost:3000/ is restricted to authenticated users only.
 
 ## Dependencies
 
