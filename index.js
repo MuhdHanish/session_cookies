@@ -41,9 +41,24 @@ app.use(session({
 }));
 
 // Handlers
+// GET
 app.get(`/`, (req, res) => {
     res.render(`landing`, { serverVariable: 'Hello from the server' });
-})
+});
+app.get(`/login`, (req, res) => {
+    res.render(`login`);
+});
+app.get(`/signup`, (req, res) => {
+    res.render(`signup`);
+});
+
+// POST
+app.post(`/login`, (req, res) => {
+    
+});
+app.post(`/signup`, (req, res) => {
+    
+});
 
 // Server setup 
 app.listen(3000, () => {
