@@ -45,16 +45,32 @@ app.use(session({
     saveUninitialized: false,
     store
 }));
+// - Authenticaion
+const isAuth = (req, res, next) => {
+    if (req.session.isAuth) {
+        return next();
+    } else {
+        return res.redirect(`/login`);
+    }
+}
+const isNotAuth = (req, res, next) => {
+    if (!req.session.isAuth) {
+        return next();
+    } else {
+        return res.redirect(`/`);
+    }
+}
 
 // Handlers
 // GET
-app.get(`/`, (req, res) => {
-    res.render(`landing`, { serverVariable: 'Hello from the server' });
+app.get(`/`, isAuth, (req, res) => {
+    const { user } = req.session;
+    res.render(`dashboard`, { serverVariable: `Hello ${user.email} 👋` });
 });
-app.get(`/login`, (req, res) => {
+app.get(`/login`, isNotAuth, (req, res) => {
     res.render(`login`, { errorMessage: null, email: '', password: '' });
 });
-app.get(`/signup`, (req, res) => {
+app.get(`/signup`, isNotAuth, (req, res) => {
     res.render(`signup`, { errorMessage: null, email: '', password: '', confirmPassword: '' });
 });
 
@@ -79,20 +95,48 @@ app.post(`/signup`,
         });
         // Save the new user to the database
         await user.save();
-        res.redirect(`/login`);  // Redirect the user to the login page
+        return res.redirect(`/login`);  // Redirect the user to the login page
     } catch (error) {
+        console.log(error);
         const { email, password, confirmPassword } = req.body;
         if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
             // If the error is due to duplicate email, render the signup page again with the error message
-            res.render('signup', { errorMessage: 'Email is already registered', email, password, confirmPassword });
+            return res.render('signup', { errorMessage: 'Email is already registered', email, password, confirmPassword });
         } else {
             // For other errors, render the signup page again with a generic error message
-            res.render('signup', { errorMessage: 'An error occurred. Please try again later.', email, password, confirmPassword });
+            return res.render('signup', { errorMessage: 'An error occurred. Please try again later', email, password, confirmPassword });
         }
     }
 });
-app.post(`/login`, async (req, res) => {
-    
+app.post(`/login`,
+    // Validation middleware (better to write in another file of middlewares)
+    [
+    body('email').isEmail(),
+    body('password').notEmpty(),
+    ], async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.render('login', { errorMessage: 'Please fill in all fields', email, password });
+        }
+        // Find the user by email
+        const user = await UserModel.findOne({ email });
+        // If user is not found or password does not match
+        if (!user || !(await bcrypt.compare(password, user.password))) {
+            return res.render('login', { errorMessage: 'Invalid email or password', email, password });
+        } else {
+            req.session.user = user;
+            req.session.isAuth = true;
+            // Authentication successful, redirect to the home page
+            return res.redirect(`/`);
+        }
+    } catch (error) {
+        console.log(error);
+        const { email, password } = req.body;
+        // For other errors, render the signup page again with a generic error message
+        return res.render('login', { errorMessage: 'An error occurred. Please try again later', email, password });
+    }
 });
 
 // Server setup 
