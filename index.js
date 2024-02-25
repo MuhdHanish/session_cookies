@@ -23,7 +23,7 @@ mongoose.connect(mongoURI, {
     useUnifiedTopology: true
 })
     .then(_res => console.log(`MongoDB connected successfully 🟢`))
-    .catch(error => console.log(`Unable to connect to MongoDB 🔴`, error));
+    .catch(error => console.error(`Unable to connect to MongoDB 🔴`, error));
 
 // Store variable to handle mongodb session
 const store = new MongoDBSession({
@@ -97,7 +97,7 @@ app.post(`/signup`,
         await user.save();
         return res.redirect(`/login`);  // Redirect the user to the login page
     } catch (error) {
-        console.log(error);
+        console.error(error);
         const { email, password, confirmPassword } = req.body;
         if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
             // If the error is due to duplicate email, render the signup page again with the error message
@@ -132,14 +132,23 @@ app.post(`/login`,
             return res.redirect(`/`);
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
         const { email, password } = req.body;
         // For other errors, render the signup page again with a generic error message
         return res.render('login', { errorMessage: 'An error occurred. Please try again later', email, password });
     }
 });
+app.post(`/logout`, (req, res) => {
+    try {
+        req.session.destroy()
+        return res.redirect(`/login`);
+    } catch (error) {
+        console.error(error);
+        return res.redirect(`/`);
+    }
+});
 
 // Server setup 
 app.listen(3000, () => {
-    console.log(`Server is Running on http://localhost:3000 🚀`);
+    console.error(`Server is Running on http://localhost:3000 🚀`);
 });

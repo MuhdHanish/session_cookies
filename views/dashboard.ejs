@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,26 +47,32 @@
         }
     </style>
 </head>
+
 <body>
 
     <header>
         <!-- Add your header content here -->
         <h1>Welcome to Our Dashboard Page</h1>
-        <button>Logout</button>
+        <form name="logout" action="/logout" method="post">
+            <button type="submit">Logout</button>
+        </form>
     </header>
 
     <main>
         <!-- Add your main content here -->
         <p>This is a simple landing page created using EJS.</p>
-        <p>Something from the server: <span><%= serverVariable %></span></p>
+        <p>Something from the server: <span>
+                <%= serverVariable %>
+            </span></p>
     </main>
 
     <footer>
         <!-- Add your footer content here -->
-        <p>&copy; 2024 Your Company Name. All rights reserved.</p>
+        <p>&copy; 2024 Session And Cookies. All rights reserved.</p>
     </footer>
 
     <!-- Add your JavaScript scripts or external JavaScript links here -->
-    
+
 </body>
+
 </html>
