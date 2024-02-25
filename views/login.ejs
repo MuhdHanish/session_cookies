@@ -81,9 +81,13 @@
 
     <main>
         <!-- Add your main content here -->
-        <form action="/login" method="post">
-            <input type="email" name="email" placeholder="Email">
-            <input type="password" name="password" placeholder="Password">
+        <form name="login" onsubmit="return validateForm()" action="/login" method="post">
+            <input id="email" type="email" name="email" placeholder="Email" value="<%= email %>">
+            <input id="password" type="password" name="password" placeholder="Password" value="<%= password %>">
+            <!-- Display error message if it exists -->
+            <% if (errorMessage) { %>
+               <p id="errorMessage" style="color: red; margin: 5px 0; font-size: small;"><%= errorMessage %></p>
+            <% } %>
             <button type="submit">Login</button>
         </form>
         <p>Don't have an account? <a href="/signup">Signup here</a>.</p> <!-- Link to move to signup page -->
@@ -95,6 +99,17 @@
     </footer>
 
     <!-- Add your JavaScript scripts or external JavaScript links here -->
-    
+    <script>
+        function validateForm() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            // Check if any field is empty
+            if (!email || !password) {
+                document.getElementById("errorMessage").innerText = "Please fill in all fields";
+                return false; 
+            }
+            return true; 
+        }
+    </script>
 </body>
 </html>
