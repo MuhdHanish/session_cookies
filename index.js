@@ -148,8 +148,10 @@ app.post(`/login`,
         return res.render('login', { errorMessage: 'An error occurred. Please try again later', email, password });
     }
 });
+// Logout Post Api
 app.post(`/logout`, (req, res) => {
     try {
+        // Destroying the session and redirecting to login
         req.session.destroy()
         return res.redirect(`/login`);
     } catch (error) {
