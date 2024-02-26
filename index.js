@@ -162,5 +162,5 @@ app.post(`/logout`, (req, res) => {
 
 // Server setup 
 app.listen(3000, () => {
-    console.error(`Server is Running on http://localhost:3000 🚀`);
+    console.log(`Server is Running on http://localhost:3000 🚀`);
 });
