@@ -64,18 +64,22 @@ const isNotAuth = (req, res, next) => {
 
 // Handlers
 // GET
+// Get Dashboard Page
 app.get(`/`, isAuth, (req, res) => {
     const { user } = req.session;
     res.render(`dashboard`, { serverVariable: `Hello ${user.email} 👋` });
 });
+// Get Login Page
 app.get(`/login`, isNotAuth, (req, res) => {
     res.render(`login`, { errorMessage: null, email: '', password: '' });
 });
+// Get Signup Page
 app.get(`/signup`, isNotAuth, (req, res) => {
     res.render(`signup`, { errorMessage: null, email: '', password: '', confirmPassword: '' });
 });
 
 // POST
+// Signup Post Api
 app.post(`/signup`,
     // Validation middleware (better to write in another file of middlewares)
     [
@@ -85,8 +89,10 @@ app.post(`/signup`,
     ], async (req, res) => {
     try {
         let { email, password, confirmPassword } = req.body;
+         // Checking api validation result
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
+             // For api validation error, render the signup page again with a generic error message
             return res.render('signup', { errorMessage: 'Please fill in all fields', email, password, confirmPassword });
         }
         password = await bcrypt.hash(password, 12);
@@ -109,6 +115,7 @@ app.post(`/signup`,
         }
     }
 });
+// Login Post Api
 app.post(`/login`,
     // Validation middleware (better to write in another file of middlewares)
     [
@@ -117,8 +124,10 @@ app.post(`/login`,
     ], async (req, res) => {
     try {
         const { email, password } = req.body;
+        // Checking api validation result
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
+             // For api validation error, render the login page again with a generic error message
             return res.render('login', { errorMessage: 'Please fill in all fields', email, password });
         }
         // Find the user by email
@@ -135,7 +144,7 @@ app.post(`/login`,
     } catch (error) {
         console.error(error);
         const { email, password } = req.body;
-        // For other errors, render the signup page again with a generic error message
+        // For other errors, render the login page again with a generic error message
         return res.render('login', { errorMessage: 'An error occurred. Please try again later', email, password });
     }
 });
