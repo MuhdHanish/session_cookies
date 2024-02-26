@@ -45,6 +45,7 @@ app.use(session({
     saveUninitialized: false,
     store
 }));
+// Router lever middlewares
 // - Authenticaion
 const isAuth = (req, res, next) => {
     if (req.session.isAuth) {
